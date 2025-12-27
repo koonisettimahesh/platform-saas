@@ -1,0 +1,119 @@
+.tenants-page {
+  max-width: 1200px;      
+  margin: 0 auto;        
+  padding: 32px 24px;   
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+.page-loading {
+  padding: 40px;
+  font-size: 18px;
+}
+
+.error-text {
+  color: red;
+  padding: 20px;
+}
+
+.tenants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  justify-content: center; /* 🔑 Center grid items */
+}
+
+/* Card */
+.tenant-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tenant-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Header */
+.tenant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tenant-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+/* Status badge */
+.status {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status.active {
+  background: #e6f7ec;
+  color: #0f9d58;
+}
+
+.status.suspended {
+  background: #fdecea;
+  color: #d93025;
+}
+
+/* Subdomain */
+.subdomain {
+  margin: 12px 0;
+  color: #555;
+}
+
+/* Plan badge */
+.plan {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.plan.free {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.plan.pro {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.plan.enterprise {
+  background: #ecfeff;
+  color: #0891b2;
+}
+
+/* Stats */
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.stat-number {
+  display: block;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #666;
+}

@@ -1,0 +1,78 @@
+version: "3.9"
+
+services:
+  # =========================
+  # DATABASE SERVICE
+  # =========================
+  database:
+    image: postgres:15
+    container_name: saas_database
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: saas_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # =========================
+  # BACKEND SERVICE
+  # =========================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: saas_backend
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+
+      # Database
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: saas_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+
+      # Auth
+      JWT_SECRET: super-secret-key
+
+    depends_on:
+      database:
+        condition: service_healthy
+
+    command: >
+      sh -c "
+      npx knex migrate:latest &&
+      npx knex seed:run &&
+      node src/app.js
+      "
+
+  # =========================
+  # FRONTEND SERVICE
+  # =========================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: saas_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API_URL: http://localhost:5000
+    depends_on:
+      - backend
+
+# =========================
+# VOLUMES
+# =========================
+volumes:
+  db_data:
+
