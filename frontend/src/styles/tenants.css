@@ -8,14 +8,17 @@
   font-size: 28px;
   font-weight: 600;
   margin-bottom: 32px;
+  color: #0f0f0f; /* black */
 }
+
 .page-loading {
   padding: 40px;
   font-size: 18px;
+  color: #0f0f0f; /* black */
 }
 
 .error-text {
-  color: red;
+  color: #b91c1c; /* deep red for errors */
   padding: 20px;
 }
 
@@ -23,16 +26,17 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 32px;
-  justify-content: center; /* 🔑 Center grid items */
+  justify-content: center; /* center grid items */
 }
 
 /* Card */
 .tenant-card {
-  background: #ffffff;
+  background: #f7f5ee; /* cream */
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: #0f0f0f; /* black text */
 }
 
 .tenant-card:hover {
@@ -50,6 +54,7 @@
 .tenant-header h3 {
   margin: 0;
   font-size: 18px;
+  color: #0f0f0f; /* black */
 }
 
 /* Status badge */
@@ -61,19 +66,19 @@
 }
 
 .status.active {
-  background: #e6f7ec;
-  color: #0f9d58;
+  background: #dbeadd; /* light olive */
+  color: #556b2f; /* dark olive */
 }
 
 .status.suspended {
-  background: #fdecea;
-  color: #d93025;
+  background: #fdecea; /* soft cream-pink */
+  color: #b91c1c; /* red */
 }
 
 /* Subdomain */
 .subdomain {
   margin: 12px 0;
-  color: #555;
+  color: #0f0f0f; /* black */
 }
 
 /* Plan badge */
@@ -86,18 +91,18 @@
 }
 
 .plan.free {
-  background: #eef2ff;
-  color: #4f46e5;
+  background: #f7f5ee; /* cream */
+  color: #556b2f; /* olive */
 }
 
 .plan.pro {
-  background: #fff7ed;
-  color: #ea580c;
+  background: #e0f0d6; /* light olive */
+  color: #3b5a1a; /* darker olive */
 }
 
 .plan.enterprise {
-  background: #ecfeff;
-  color: #0891b2;
+  background: #dbeadd; /* very light olive */
+  color: #556b2f; /* dark olive */
 }
 
 /* Stats */
@@ -111,9 +116,10 @@
   display: block;
   font-size: 22px;
   font-weight: bold;
+  color: #0f0f0f; /* black */
 }
 
 .stat-label {
   font-size: 12px;
-  color: #666;
+  color: #556b2f; /* olive label */
 }
