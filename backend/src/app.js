@@ -15,9 +15,9 @@ app.use(cors());
 app.use(express.json());
 
 // Health Check
-app.get('/', (req, res) => {
-  res.send('Backend is running');
-});
+app.get('/', (req, res) => res.send('Backend is running'));
+app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
+
 
 // Routes
 app.use('/api', taskRoutes);
