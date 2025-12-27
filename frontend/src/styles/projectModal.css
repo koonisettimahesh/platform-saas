@@ -1,7 +1,7 @@
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(15, 15, 15, 0.6); /* semi-transparent black */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,7 +9,7 @@
 }
 
 .modal-card {
-  background: #ffffff;
+  background: #f7f5ee; /* cream */
   width: 100%;
   max-width: 480px;
   border-radius: 16px;
@@ -22,12 +22,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e3da; /* creamish border */
 }
 
 .modal-header h2 {
   font-size: 20px;
   font-weight: 600;
+  color: #0f0f0f; /* black */
 }
 
 .close-btn {
@@ -35,6 +36,7 @@
   border: none;
   background: transparent;
   cursor: pointer;
+  color: #0f0f0f; /* black */
 }
 
 .modal-body {
@@ -50,7 +52,7 @@
 .form-group label {
   font-size: 14px;
   margin-bottom: 6px;
-  color: #374151;
+  color: #0f0f0f; /* black */
 }
 
 .form-group input,
@@ -58,16 +60,18 @@
 .form-group select {
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid #d1d5db;
+  border: 1px solid #e5e3da; /* soft border */
   font-size: 14px;
+  background: #ffffff; /* cream-white */
+  color: #0f0f0f; /* black text */
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+  border-color: #6b8e23; /* olive */
+  box-shadow: 0 0 0 2px rgba(107, 142, 35, 0.15); /* olive shadow */
 }
 
 .modal-actions {
@@ -78,8 +82,8 @@
 }
 
 .btn-primary {
-  background: #2563eb;
-  color: white;
+  background: #6b8e23; /* olive */
+  color: #ffffff;
   padding: 10px 18px;
   border-radius: 10px;
   border: none;
@@ -88,14 +92,15 @@
 }
 
 .btn-primary:hover {
-  background: #1e40af;
+  background: #556b2f; /* dark olive */
 }
 
 .btn-secondary {
-  background: #f3f4f6;
+  background: #f7f5ee; /* cream */
+  color: #0f0f0f; /* black text */
   padding: 10px 18px;
   border-radius: 10px;
-  border: none;
+  border: 1px solid #e5e3da;
   cursor: pointer;
 }
 
