@@ -11,6 +11,7 @@
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 20px;
+  color: #0f0f0f; /* black */
 }
 
 /* ===============================
@@ -25,21 +26,22 @@
 .filters select {
   padding: 10px 14px;
   border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  background: white;
+  border: 1px solid #e5e3da; /* soft cream border */
+  background: #f7f5ee; /* cream background */
   font-size: 14px;
   cursor: pointer;
+  color: #0f0f0f; /* black text */
 }
 
 /* ===============================
    EMPTY STATE
 ================================ */
 .empty-state {
-  background: white;
+  background: #f7f5ee; /* cream */
   border-radius: 14px;
   padding: 48px;
   text-align: center;
-  color: #6b7280;
+  color: #0f0f0f; /* black text */
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
@@ -48,7 +50,7 @@
 ================================ */
 .task-table {
   width: 100%;
-  background: white;
+  background: #f7f5ee; /* cream */
   border-radius: 16px;
   border-collapse: collapse;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
@@ -58,20 +60,21 @@
 .task-table th {
   text-align: left;
   padding: 14px 16px;
-  background: #f9fafb;
+  background: #e5e3da; /* cream header */
   font-size: 13px;
-  color: #374151;
+  color: #0f0f0f; /* black text */
   font-weight: 600;
 }
 
 .task-table td {
   padding: 14px 16px;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e3da;
   font-size: 14px;
+  color: #0f0f0f; /* black text */
 }
 
 .task-table tr:hover {
-  background: #f9fafb;
+  background: #f0eee3; /* slightly darker cream hover */
 }
 
 /* ===============================
@@ -86,35 +89,36 @@
 }
 
 .badge.todo {
-  background: #fef3c7;
-  color: #92400e;
+  background: #f7f5ee; /* cream */
+  color: #6b8e23; /* olive */
+  border: 1px solid #6b8e23;
 }
 
 .badge.in_progress {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: #e0f0d6; /* light olive */
+  color: #556b2f; /* dark olive */
 }
 
 .badge.completed {
-  background: #dcfce7;
-  color: #166534;
+  background: #dbeadd; /* very light olive */
+  color: #3b5a1a; /* deep olive */
 }
 
 /* ===============================
    PRIORITY
 ================================ */
 .priority.low {
-  color: #16a34a;
+  color: #6b8e23; /* olive */
   font-weight: 600;
 }
 
 .priority.medium {
-  color: #ca8a04;
+  color: #556b2f; /* dark olive */
   font-weight: 600;
 }
 
 .priority.high {
-  color: #dc2626;
+  color: #0f0f0f; /* black */
   font-weight: 700;
 }
 
