@@ -1,16 +1,25 @@
 /* ===== GLOBAL THEME ===== */
 :root {
-  --primary: #4f46e5;
-  --primary-dark: #4338ca;
-  --bg: #f8fafc;
-  --card-bg: #ffffff;
-  --text: #0f172a;
-  --muted: #64748b;
-  --border: #e5e7eb;
-  --success: #16a34a;
-  --error: #dc2626;
+  /* PRIMARY (Olive) */
+  --primary: #6B7A5E;        /* olive green */
+  --primary-dark: #5E6D52;   /* darker olive */
+
+  /* BACKGROUNDS */
+  --bg: #FFF6E5;             /* cream */
+  --card-bg: #FFFDF6;        /* soft cream */
+
+  /* TEXT */
+  --text: #0F0F0F;           /* black */
+  --muted: #63625E;          /* warm muted gray */
+
+  /* UI */
+  --border: #D8D2C4;         /* soft warm border */
+  --success: #2F6B3F;        /* muted green */
+  --error: #8A1F1F;          /* soft red */
+
+  /* SHAPE & EFFECTS */
   --radius: 10px;
-  --shadow: 0 10px 25px rgba(0,0,0,0.08);
+  --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -27,7 +36,11 @@ body {
 
 a {
   text-decoration: none;
-  color: inherit;
+  color: var(--primary);
+}
+
+a:hover {
+  color: var(--primary-dark);
 }
 
 button {
