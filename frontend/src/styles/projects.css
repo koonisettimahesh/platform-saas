@@ -11,8 +11,8 @@
 }
 
 .primary-btn {
-  background: #2563eb;
-  color: white;
+  background: #6b8e23; /* olive */
+  color: #ffffff;       /* white text */
   padding: 10px 18px;
   border-radius: 10px;
   border: none;
@@ -20,6 +20,9 @@
   font-weight: 500;
 }
 
+.primary-btn:hover {
+  background: #556b2f; /* dark olive */
+}
 
 .filters {
   display: flex;
@@ -31,7 +34,9 @@
 .filters select {
   padding: 8px;
   border-radius: 6px;
-  border: 1px solid #d1d5db;
+  border: 1px solid #e5e3da; /* creamish border */
+  background: #f7f5ee; /* cream background */
+  color: #0f0f0f; /* black text */
 }
 
 .project-grid {
@@ -41,14 +46,14 @@
 }
 
 .project-card {
-  background: white;
+  background: #f7f5ee; /* cream */
   padding: 20px;
   border-radius: 14px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 .project-card p {
-  color: #6b7280;
+  color: #6b7280; /* muted text */
   margin: 10px 0;
 }
 
@@ -72,34 +77,55 @@
 .actions button {
   flex: 1;
   padding: 6px;
+  background: #6b8e23; /* olive */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: #556b2f; /* dark olive */
 }
 
 .actions .danger {
-  color: #dc2626;
+  color: #b91c1c; /* red */
 }
 
-/* MODAL */
+/* ===== MODAL ===== */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(15,15,15,0.5); /* semi-transparent black */
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2000;
 }
 
 .modal {
-  background: white;
+  background: #f7f5ee; /* cream */
   padding: 24px;
   border-radius: 14px;
   width: 100%;
   max-width: 420px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
 }
 
 .modal form {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.modal form input,
+.modal form select,
+.modal form textarea {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e5e3da; /* cream border */
+  background: #ffffff;
+  color: #0f0f0f;
 }
 
 .modal-actions {
