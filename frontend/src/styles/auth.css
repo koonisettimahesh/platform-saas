@@ -2,7 +2,9 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(120deg, #eef2ff, #f8fafc);
+
+  /* THEME BACKGROUND */
+  background: linear-gradient(120deg, #FFF6E5, #FFFDF6);
 }
 
 .auth-content {
@@ -13,7 +15,6 @@
   padding: 40px;
 }
 
-
 .auth-info {
   padding: 40px;
 }
@@ -21,19 +22,19 @@
 .auth-info h1 {
   font-size: 42px;
   font-weight: 800;
-  color: var(--text);
+  color: #0F0F0F; /* black */
   margin-bottom: 20px;
 }
 
 .auth-info p {
   font-size: 18px;
-  color: var(--muted);
+  color: #63625E; /* muted */
   max-width: 420px;
 }
 
 .auth-card {
   max-width: 420px;
-  background: var(--card-bg);
+  background: #FFFDF6; /* soft cream card */
   padding: 36px;
   border-radius: 14px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
@@ -44,6 +45,7 @@
   text-align: center;
   font-size: 26px;
   margin-bottom: 24px;
+  color: #0F0F0F;
 }
 
 .auth-card input {
@@ -51,13 +53,16 @@
   padding: 14px;
   margin-bottom: 14px;
   border-radius: 10px;
-  border: 1px solid var(--border);
+
+  background-color: #FFFFFF;
+  border: 1px solid #D8D2C4; /* soft border */
+  color: #0F0F0F;
 }
 
 .auth-card input:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+  border-color: #6B7A5E; /* olive */
+  box-shadow: 0 0 0 3px rgba(107, 122, 94, 0.25);
 }
 
 .auth-options {
@@ -66,7 +71,7 @@
   gap: 10px;
   margin: 12px 0 20px;
   font-size: 14px;
-  color: var(--muted);
+  color: #63625E;
 }
 
 .auth-options input[type="checkbox"] {
@@ -83,36 +88,44 @@
 .auth-card button {
   width: 100%;
   padding: 14px;
-  background: var(--primary);
-  color: white;
+
+  background: #6B7A5E; /* olive */
+  color: #FFFFFF;
+
   border: none;
   border-radius: 10px;
   font-size: 16px;
   font-weight: 600;
 }
 
+.auth-card button:hover {
+  background: #5E6D52; /* darker olive */
+}
+
 .auth-footer {
   text-align: center;
   margin-top: 18px;
   font-size: 14px;
+  color: #63625E;
 }
 
 .auth-footer a {
-  color: var(--primary);
+  color: #6B7A5E;
   font-weight: 600;
 }
 
+/* STATES */
 .error {
-  background: #fee2e2;
-  color: var(--error);
+  background: #FDECEC; /* soft red */
+  color: #8A1F1F;
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 16px;
 }
 
 .success {
-  background: #dcfce7;
-  color: var(--success);
+  background: #E8F3EA; /* soft green */
+  color: #2F6B3F;
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 16px;
@@ -136,32 +149,9 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: 14px;
-  color: var(--muted);
+  color: #63625E;
   pointer-events: none;
 }
-
-/* =====================
-   CHECKBOX FIX (REUSE)
-===================== */
-.auth-options {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 14px 0 20px;
-  font-size: 14px;
-  color: var(--muted);
-}
-
-.auth-options input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-}
-
-.auth-options label {
-  cursor: pointer;
-}
-
 
 /* MOBILE */
 @media (max-width: 900px) {
