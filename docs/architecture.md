@@ -5,91 +5,127 @@
 
 ## 1. System Architecture Overview
 
-The system follows a standard three-tier architecture consisting of a frontend client, backend API server, and a relational database. The application is designed as a multi-tenant SaaS platform where tenant isolation is enforced at the application and database levels using a tenant identifier.
+Three-tier architecture: **Browser → React Frontend → Node.js/Express Backend → PostgreSQL Database**.
 
-### Architecture Components
-- **Client (Browser):** Users interact with the system through a web browser.
-- **Frontend Application:** A React-based single-page application that handles UI rendering and user interactions.
-- **Backend API Server:** A Node.js and Express.js server responsible for business logic, authentication, authorization, and data processing.
-- **Database:** PostgreSQL database that stores tenant, user, project, task, and audit log data.
-- **Authentication Flow:** JWT-based authentication ensures secure and stateless communication between frontend and backend.
+**Multi-tenancy**: `tenant_id` column in all tables enforces data isolation.
+
+### Components
+- **Client**: Web browser
+- **Frontend**: React SPA
+- **Backend**: Node.js + Express API
+- **Database**: PostgreSQL
+- **Auth**: JWT Bearer tokens (24h expiry)
+
+**Diagram**: `docs/images/system-architecture.png`
 
 ---
 
 ## 2. System Architecture Diagram
 
-The system architecture diagram illustrates how the frontend, backend, and database interact with each other. Authentication is handled using JSON Web Tokens (JWT), which are issued by the backend upon successful login and attached to subsequent API requests.
+```
+Browser (Client) 
+    ↓
+React Frontend 
+    ↓ API Calls (JWT)
+Node.js/Express Backend 
+    ↓ SQL Queries
+PostgreSQL Database
+    ↓ tenant_id isolation
+```
 
-**Diagram Location:**  
-`docs/images/system-architecture.png`
+**Image**: `docs/images/system-architecture.png`
 
 ---
 
-## 3. Database Schema Design (ERD)
+## 3. Database Schema (ERD)
 
-The database schema is designed to support strict multi-tenancy using a shared database and shared schema approach. Each core table includes a `tenant_id` column to enforce data isolation. Foreign key relationships ensure data integrity, and indexes on `tenant_id` improve query performance.
+**Shared schema + tenant_id isolation approach.**
 
 ### Core Tables
-- **tenants**
-- **users**
-- **projects**
-- **tasks**
-- **audit_logs**
+```
+tenants
+├── id (PK)
+├── name
+└── subdomain
 
-Each user, project, and task is associated with a tenant. Super Admin users are the only exception and have a NULL `tenant_id`.
+users
+├── id (PK)
+├── tenant_id (FK) ← NULL for Super Admin
+├── email (unique)
+├── role
+└── INDEX on tenant_id
 
-**ERD Location:**  
-`docs/images/database-erd.png`
+projects
+├── id (PK)
+├── tenant_id (FK)
+├── name
+└── INDEX on tenant_id
+
+tasks
+├── id (PK)
+├── project_id (FK)
+├── tenant_id (FK) ← redundant for isolation
+├── title
+└── INDEX on tenant_id, project_id
+
+audit_logs
+├── id (PK)
+├── tenant_id (FK)
+└── action
+```
+
+**ERD Image**: `docs/images/database-erd.png`
 
 ---
 
 ## 4. API Architecture
 
-The API layer is organized into modules based on functionality. All protected endpoints require JWT authentication, and role-based access control (RBAC) is enforced for sensitive operations.
+### 4.1 Authentication (4 APIs)
+| Endpoint | Method | Auth | Role |
+|----------|--------|------|------|
+| `/auth/register-tenant` | POST | No | Public |
+| `/auth/login` | POST | No | Public |
+| `/auth/me` | GET | Yes | All |
+| `/auth/logout` | POST | Yes | All |
 
-### 4.1 Authentication APIs
-| Endpoint | Method | Auth Required | Role |
-|--------|--------|--------------|------|
-| /api/auth/register | POST | No | Public |
-| /api/auth/login | POST | No | Public |
-| /api/auth/me | GET | Yes | All |
-| /api/auth/logout | POST | Yes | All |
+### 4.2 Tenant Management (4 APIs)
+| Endpoint | Method | Auth | Role |
+|----------|--------|------|------|
+| `/tenants` | GET | Yes | Super Admin |
+| `/tenants/:id` | GET | Yes | Super/Tenant Admin |
+| `/tenants/:id` | PUT | Yes | Super/Tenant Admin |
+| `/tenants/:id/users` | POST | Yes | Tenant Admin |
+
+### 4.3 User Management (4 APIs)
+| Endpoint | Method | Auth | Role |
+|----------|--------|------|------|
+| `/tenants/:id/users` | GET | Yes | Tenant Admin |
+| `/users/:id` | PUT | Yes | Tenant Admin |
+| `/users/:id` | DELETE | Yes | Tenant Admin |
+
+### 4.4 Project Management (5 APIs)
+| Endpoint | Method | Auth | Role |
+|----------|--------|------|------|
+| `/projects` | POST | Yes | All |
+| `/projects` | GET | Yes | All |
+| `/projects/:id` | GET | Yes | All |
+| `/projects/:id` | PUT | Yes | Project Owner |
+| `/projects/:id` | DELETE | Yes | Tenant Admin |
+
+### 4.5 Task Management (5 APIs)
+| Endpoint | Method | Auth | Role |
+|----------|--------|------|------|
+| `/projects/:id/tasks` | POST | Yes | All |
+| `/projects/:id/tasks` | GET | Yes | All |
+| `/tasks/:id/status` | PATCH | Yes | Assignee |
+| `/tasks/:id` | PUT | Yes | All |
+| `/health` | GET | No | Public |
+
+**Total: 22 APIs** ✅
 
 ---
 
-### 4.2 Tenant Management APIs
-| Endpoint | Method | Auth Required | Role |
-|--------|--------|--------------|------|
-| /api/tenants | GET | Yes | Super Admin |
-| /api/tenants/:id | GET | Yes | Super Admin |
-| /api/tenants/:id/plan | PUT | Yes | Super Admin |
-
----
-
-### 4.3 User Management APIs
-| Endpoint | Method | Auth Required | Role |
-|--------|--------|--------------|------|
-| /api/users | POST | Yes | Tenant Admin |
-| /api/users | GET | Yes | Tenant Admin |
-| /api/users/:id | DELETE | Yes | Tenant Admin |
-
----
-
-### 4.4 Project Management APIs
-| Endpoint | Method | Auth Required | Role |
-|--------|--------|--------------|------|
-| /api/projects | POST | Yes | Tenant Admin |
-| /api/projects | GET | Yes | All |
-| /api/projects/:id | GET | Yes | All |
-| /api/projects/:id | PUT | Yes | Tenant Admin |
-| /api/projects/:id | DELETE | Yes | Tenant Admin |
-
----
-
-### 4.5 Task Management APIs
-| Endpoint | Method | Auth Required | Role |
-|--------|--------|--------------|------|
-| /api/tasks | POST | Yes | Tenant Admin |
-| /api/tasks/:id | PUT | Yes | All |
-| /api/tasks | GET | Yes | All |
-| /api/tasks/:id | GET | Yes | All |
+**File Locations:**
+- Architecture Diagram: `docs/images/system-architecture.png`
+- Database ERD: `docs/images/database-erd.png`
+```
