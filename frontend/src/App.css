@@ -3,6 +3,10 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+
+  /* THEME */
+  background-color: #FFF6E5; /* cream */
+  color: #0F0F0F; /* black */
 }
 
 .logo {
@@ -11,11 +15,15 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
+/* Olive green glow on hover */
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #6B7A5Eaa);
 }
+
+/* Slightly brighter olive for React logo */
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #7A8A6Aaa);
 }
 
 @keyframes logo-spin {
@@ -35,8 +43,13 @@
 
 .card {
   padding: 2em;
+
+  /* Optional subtle card contrast */
+  background-color: #FFFDF6; /* softer cream */
+  border-radius: 12px;
 }
 
+/* Muted olive/gray text */
 .read-the-docs {
-  color: #888;
+  color: #63625E;
 }
