@@ -11,7 +11,7 @@
 
 # CMD ["npm", "start"]
 
-$ cat frontend/Dockerfile
+
 FROM node:22
 
 WORKDIR /app
