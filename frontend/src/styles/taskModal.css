@@ -2,7 +2,7 @@
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(15, 15, 15, 0.6); /* semi-transparent black */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -11,7 +11,7 @@
 
 /* CARD */
 .modal-card {
-  background: #ffffff;
+  background: #f7f5ee; /* cream */
   width: 520px;
   max-width: 92%;
   border-radius: 14px;
@@ -30,6 +30,7 @@
 .modal-header h2 {
   font-size: 20px;
   font-weight: 600;
+  color: #0f0f0f; /* black */
 }
 
 .close-btn {
@@ -37,6 +38,7 @@
   background: transparent;
   font-size: 22px;
   cursor: pointer;
+  color: #0f0f0f; /* black */
 }
 
 /* FORM */
@@ -46,7 +48,7 @@
 
 .task-form label {
   font-size: 13px;
-  color: #374151;
+  color: #0f0f0f; /* black */
   margin-bottom: 4px;
   display: block;
 }
@@ -57,8 +59,10 @@
   width: 100%;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #d1d5db;
+  border: 1px solid #e5e3da; /* creamish border */
   font-size: 14px;
+  background: #ffffff; /* cream-white */
+  color: #0f0f0f; /* black text */
 }
 
 .task-form textarea {
@@ -83,18 +87,23 @@
 }
 
 .ghost-btn {
-  background: #f3f4f6;
-  border: none;
+  background: #f7f5ee; /* cream */
+  border: 1px solid #e5e3da;
+  color: #0f0f0f; /* black */
   padding: 10px 16px;
   border-radius: 8px;
   cursor: pointer;
 }
 
 .primary-btn {
-  background: #2563eb;
-  color: #ffffff;
+  background: #6b8e23; /* olive */
+  color: #ffffff;       /* white */
   border: none;
   padding: 10px 18px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #556b2f; /* dark olive hover */
 }
