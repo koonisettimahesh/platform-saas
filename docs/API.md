@@ -1,29 +1,32 @@
-# API Documentation
-## Multi-Tenant SaaS Platform – Project & Task Management System
+***
+
+# Multi-Tenant SaaS – Project & Task Management API
 
 **Base URL (Local):** `http://localhost:5000/api`
 
----
+## Authentication
 
-## Authentication Summary
-* **Method:** JWT-based authentication using Bearer Tokens.
-* **Header Format:** `Authorization: Bearer <JWT_TOKEN>`
-* **Token Expiry:** 24 hours.
-* **Access Control:** * Super Admin has no tenant association and can manage all tenants.
-    * Tenant users are strictly restricted to their own tenant's data.
-    * Role-based access is enforced at the API level.
+- **Scheme:** JWT-based authentication using Bearer tokens  
+- **Header:** `Authorization: Bearer <JWT_TOKEN>`  
+- **Token expiry:** 24 hours  
+- **Access control:**
+  - **Super Admin:** No tenant association, can manage all tenants
+  - **Tenant users:** Can access only their own tenant’s data
+  - **Role-based:** Enforced at API level
 
----
+***
 
 ## 1. Authentication APIs
 
-### API 1: Register Tenant
-Registers a new tenant and creates a tenant admin.
-* **Endpoint:** `POST /auth/register-tenant`
-* **Authentication:** Not Required
+### 1.1 Register Tenant
+
+- **Method:** `POST`  
+- **Endpoint:** `/auth/register-tenant`  
+- **Authentication:** Not required  
 
 #### Request Body
 
+```json
 {
   "tenantName": "Test Company Alpha",
   "subdomain": "testalpha",
@@ -31,9 +34,11 @@ Registers a new tenant and creates a tenant admin.
   "adminPassword": "TestPass@123",
   "adminFullName": "Alpha Admin"
 }
+```
 
-## Success Response (201)
+#### Success Response (201)
 
+```json
 {
   "success": true,
   "message": "Tenant registered successfully",
@@ -48,24 +53,30 @@ Registers a new tenant and creates a tenant admin.
     }
   }
 }
+```
+#### Example
 
-## API 2: Login
-Authenticates user and returns JWT token.
+***
 
-- Endpoint: POST /auth/login
+### 1.2 Login
 
-- Authentication: Not Required
+- **Method:** `POST`  
+- **Endpoint:** `/auth/login`  
+- **Authentication:** Not required  
 
-### Request Body
+#### Request Body
 
+```json
 {
   "email": "admin@demo.com",
   "password": "Demo@123",
   "tenantSubdomain": "demo"
 }
+```
 
-## Success Response (200)
+#### Success Response (200)
 
+```json
 {
   "success": true,
   "data": {
@@ -80,27 +91,93 @@ Authenticates user and returns JWT token.
     "expiresIn": 86400
   }
 }
+```
 
-## API 3: Get Current User
-- Endpoint: GET /auth/me
+***
 
-- Authentication: Required
+### 1.3 Get Current User
 
-## API 4: Logout
-- Endpoint: POST /auth/logout
+- **Method:** `GET`  
+- **Endpoint:** `/auth/me`  
+- **Authentication:** Required (`Bearer <token>`)  
 
-- Authentication: Required
+#### Request
+
+- No body
+
+```http
+GET /api/auth/me
+Authorization: Bearer <JWT_TOKEN>
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "uuid",
+    "email": "admin@demo.com",
+    "fullName": "Demo Admin",
+    "role": "tenant_admin",
+    "tenantId": "uuid"
+  }
+}
+```
+
+***
+
+### 1.4 Logout
+
+- **Method:** `POST`  
+- **Endpoint:** `/auth/logout`  
+- **Authentication:** Required (`Bearer <token>`)  
+
+#### Request
+
+- No body
+
+#### Example
+
+```http
+POST /api/auth/logout
+Authorization: Bearer <JWT_TOKEN>
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Logged out successfully"
+}
+```
+
+***
 
 ## 2. Tenant Management APIs
-## API 5: Get Tenant Details
-- Endpoint: GET /tenants/:tenantId
 
-- Authentication: Required
+### 2.1 Get Tenant Details
 
-- Authorization: Tenant Admin (own tenant) or Super Admin
+- **Method:** `GET`  
+- **Endpoint:** `/tenants/:tenantId`  
+- **Authentication:** Required  
+- **Authorization:** Tenant Admin (own tenant) or Super Admin  
 
-## Success Response (200)
+#### Path Parameters
 
+- `tenantId` (string, required) – Tenant UUID
+
+#### Example
+
+```http
+GET /api/tenants/5f2b8f2c-1234-5678-9999-abcdefabcdef
+Authorization: Bearer <JWT_TOKEN>
+```
+
+#### Success Response (200)
+
+```json
 {
   "success": true,
   "data": {
@@ -119,101 +196,617 @@ Authenticates user and returns JWT token.
     }
   }
 }
+```
 
-## API 6: Update Tenant
-- Endpoint: PUT /tenants/:tenantId
+***
 
-- Authentication: Required
+### 2.2 Update Tenant
 
-- Authorization: * Tenant Admin -> update name only
+- **Method:** `PUT`  
+- **Endpoint:** `/tenants/:tenantId`  
+- **Authentication:** Required  
+- **Authorization:**  
+  - Tenant Admin → can update **name** only  
+  - Super Admin → can update all fields  
 
-  - Super Admin -> update all fields
+#### Path Parameters
 
-## API 7: List All Tenants
-- Endpoint: GET /tenants
+- `tenantId` (string, required)
 
-- Authentication: Required
+#### Example Request Body (Super Admin)
 
-- Authorization: Super Admin only
+```json
+{
+  "name": "New Company Name",
+  "status": "active",
+  "subscriptionPlan": "enterprise",
+  "maxUsers": 100,
+  "maxProjects": 50
+}
+```
 
-- Query Parameters: page, limit, status, subscriptionPlan
+#### Example Request Body (Tenant Admin)
+
+```json
+{
+  "name": "New Company Name"
+}
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Tenant updated successfully",
+  "data": {
+    "id": "uuid",
+    "name": "New Company Name",
+    "subdomain": "demo",
+    "status": "active",
+    "subscriptionPlan": "enterprise",
+    "maxUsers": 100,
+    "maxProjects": 50,
+    "createdAt": "timestamp"
+  }
+}
+```
+
+***
+
+### 2.3 List All Tenants
+
+- **Method:** `GET`  
+- **Endpoint:** `/tenants`  
+- **Authentication:** Required  
+- **Authorization:** Super Admin only  
+
+#### Query Parameters
+
+- `page` (number, optional, default: 1)  
+- `limit` (number, optional, default: 10)  
+- `status` (string, optional, e.g., `active`, `inactive`)  
+- `subscriptionPlan` (string, optional, e.g., `free`, `pro`, `enterprise`)
+
+#### Example
+
+```http
+GET /api/tenants?page=1&limit=10&status=active
+Authorization: Bearer <JWT_TOKEN>
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "uuid",
+      "name": "Demo Company",
+      "subdomain": "demo",
+      "status": "active",
+      "subscriptionPlan": "pro",
+      "maxUsers": 25,
+      "maxProjects": 15,
+      "createdAt": "timestamp"
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 10,
+    "total": 1
+  }
+}
+```
+
+***
 
 ## 3. User Management APIs
-## API 8: Add User to Tenant
-- Endpoint: POST /tenants/:tenantId/users
 
-- Authentication: Required
+### 3.1 Add User to Tenant
 
-- Authorization: Tenant Admin
+- **Method:** `POST`  
+- **Endpoint:** `/tenants/:tenantId/users`  
+- **Authentication:** Required  
+- **Authorization:** Tenant Admin  
 
-## API 9: List Tenant Users
-- Endpoint: GET /tenants/:tenantId/users
+#### Path Parameters
 
-- Authentication: Required
+- `tenantId` (string, required)
 
-## API 10: Update User
-- Endpoint: PUT /users/:userId
+#### Request Body
 
-- Authentication: Required
+```json
+{
+  "email": "user1@demo.com",
+  "fullName": "Demo User 1",
+  "password": "UserPass@123",
+  "role": "member"
+}
+```
 
-## API 11: Delete User
-- Endpoint: DELETE /users/:userId
+#### Success Response (201)
 
-- Authentication: Required
+```json
+{
+  "success": true,
+  "message": "User created successfully",
+  "data": {
+    "id": "uuid",
+    "email": "user1@demo.com",
+    "fullName": "Demo User 1",
+    "role": "member",
+    "tenantId": "uuid"
+  }
+}
+```
+
+***
+
+### 3.2 List Tenant Users
+
+- **Method:** `GET`  
+- **Endpoint:** `/tenants/:tenantId/users`  
+- **Authentication:** Required  
+
+#### Path Parameters
+
+- `tenantId` (string, required)
+
+#### Example
+
+```http
+GET /api/tenants/5f2b8f2c-1234-5678-9999-abcdefabcdef/users
+Authorization: Bearer <JWT_TOKEN>
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "uuid",
+      "email": "admin@demo.com",
+      "fullName": "Demo Admin",
+      "role": "tenant_admin"
+    },
+    {
+      "id": "uuid",
+      "email": "user1@demo.com",
+      "fullName": "Demo User 1",
+      "role": "member"
+    }
+  ]
+}
+```
+
+***
+
+### 3.3 Update User
+
+- **Method:** `PUT`  
+- **Endpoint:** `/users/:userId`  
+- **Authentication:** Required  
+
+*(Authorization rules depend on your roles: typically Tenant Admin or the user themself can update.)*
+
+#### Path Parameters
+
+- `userId` (string, required)
+
+#### Request Body
+
+```json
+{
+  "fullName": "Updated User Name",
+  "role": "member",
+  "password": "NewPass@123"
+}
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "User updated successfully",
+  "data": {
+    "id": "uuid",
+    "email": "user1@demo.com",
+    "fullName": "Updated User Name",
+    "role": "member",
+    "tenantId": "uuid"
+  }
+}
+```
+
+***
+
+### 3.4 Delete User
+
+- **Method:** `DELETE`  
+- **Endpoint:** `/users/:userId`  
+- **Authentication:** Required  
+
+#### Path Parameters
+
+- `userId` (string, required)
+
+#### Example
+
+```http
+DELETE /api/users/907c7ef1-1234-5678-9999-abcdefabcdef
+Authorization: Bearer <JWT_TOKEN>
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "User deleted successfully"
+}
+```
+
+***
 
 ## 4. Project Management APIs
-- API 12: Create Project
-- Endpoint: POST /projects
 
-- Authentication: Required
+### 4.1 Create Project
 
-## API 13: List Projects
-- Endpoint: GET /projects
+- **Method:** `POST`  
+- **Endpoint:** `/projects`  
+- **Authentication:** Required  
 
-- Authentication: Required
+#### Request Body
 
-## API 14: Update Project
-- Endpoint: PUT /projects/:projectId
+```json
+{
+  "name": "Website Redesign",
+  "description": "Revamp the marketing website",
+  "startDate": "2025-01-01",
+  "endDate": "2025-03-31",
+  "status": "active"
+}
+```
 
-- Authentication: Required
+#### Success Response (201)
 
-## API 15: Delete Project
-- Endpoint: DELETE /projects/:projectId
+```json
+{
+  "success": true,
+  "message": "Project created successfully",
+  "data": {
+    "id": "uuid",
+    "name": "Website Redesign",
+    "description": "Revamp the marketing website",
+    "startDate": "2025-01-01",
+    "endDate": "2025-03-31",
+    "status": "active",
+    "tenantId": "uuid",
+    "createdAt": "timestamp"
+  }
+}
+```
 
-- Authentication: Required
+***
+
+### 4.2 List Projects
+
+- **Method:** `GET`  
+- **Endpoint:** `/projects`  
+- **Authentication:** Required  
+
+#### Query Parameters (optional)
+
+- `status` (string, e.g., `active`, `completed`, `archived`)  
+- `page` (number)  
+- `limit` (number)
+
+#### Example
+
+```http
+GET /api/projects?status=active&page=1&limit=10
+Authorization: Bearer <JWT_TOKEN>
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "uuid",
+      "name": "Website Redesign",
+      "description": "Revamp the marketing website",
+      "status": "active",
+      "startDate": "2025-01-01",
+      "endDate": "2025-03-31",
+      "tenantId": "uuid",
+      "createdAt": "timestamp"
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 10,
+    "total": 1
+  }
+}
+```
+
+***
+
+### 4.3 Update Project
+
+- **Method:** `PUT`  
+- **Endpoint:** `/projects/:projectId`  
+- **Authentication:** Required  
+
+#### Path Parameters
+
+- `projectId` (string, required)
+
+#### Request Body
+
+```json
+{
+  "name": "Website Redesign v2",
+  "description": "Revamp website with new branding",
+  "status": "active",
+  "startDate": "2025-01-10",
+  "endDate": "2025-04-15"
+}
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Project updated successfully",
+  "data": {
+    "id": "uuid",
+    "name": "Website Redesign v2",
+    "description": "Revamp website with new branding",
+    "status": "active",
+    "startDate": "2025-01-10",
+    "endDate": "2025-04-15",
+    "tenantId": "uuid",
+    "updatedAt": "timestamp"
+  }
+}
+```
+
+***
+
+### 4.4 Delete Project
+
+- **Method:** `DELETE`  
+- **Endpoint:** `/projects/:projectId`  
+- **Authentication:** Required  
+
+#### Path Parameters
+
+- `projectId` (string, required)
+
+#### Example
+
+```http
+DELETE /api/projects/62e9f0e1-1234-5678-9999-abcdefabcdef
+Authorization: Bearer <JWT_TOKEN>
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Project deleted successfully"
+}
+```
+
+***
 
 ## 5. Task Management APIs
-## API 16: Create Task
-- Endpoint: POST /projects/:projectId/tasks
 
-- Authentication: Required
+### 5.1 Create Task
 
-## API 17: List Project Tasks
-- Endpoint: GET /projects/:projectId/tasks
+- **Method:** `POST`  
+- **Endpoint:** `/projects/:projectId/tasks`  
+- **Authentication:** Required  
 
-- Authentication: Required
+#### Path Parameters
 
-## API 18: Update Task Status
-- Endpoint: PATCH /tasks/:taskId/status
+- `projectId` (string, required)
 
-- Authentication: Required
+#### Request Body
 
-## API 19: Update Task
-- Endpoint: PUT /tasks/:taskId
+```json
+{
+  "title": "Design homepage",
+  "description": "Create wireframes and final UI for homepage",
+  "assigneeId": "uuid",
+  "status": "todo",
+  "priority": "high",
+  "dueDate": "2025-01-15"
+}
+```
 
-- Authentication: Required
+#### Success Response (201)
+
+```json
+{
+  "success": true,
+  "message": "Task created successfully",
+  "data": {
+    "id": "uuid",
+    "projectId": "uuid",
+    "title": "Design homepage",
+    "description": "Create wireframes and final UI for homepage",
+    "assigneeId": "uuid",
+    "status": "todo",
+    "priority": "high",
+    "dueDate": "2025-01-15",
+    "createdAt": "timestamp"
+  }
+}
+```
+
+***
+
+### 5.2 List Project Tasks
+
+- **Method:** `GET`  
+- **Endpoint:** `/projects/:projectId/tasks`  
+- **Authentication:** Required  
+
+#### Path Parameters
+
+- `projectId` (string, required)
+
+#### Query Parameters (optional)
+
+- `status` (string, e.g., `todo`, `in_progress`, `done`)  
+- `assigneeId` (string)
+
+#### Example
+
+```http
+GET /api/projects/62e9f0e1-1234-5678-9999-abcdefabcdef/tasks?status=todo
+Authorization: Bearer <JWT_TOKEN>
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "uuid",
+      "projectId": "uuid",
+      "title": "Design homepage",
+      "description": "Create wireframes and final UI for homepage",
+      "assigneeId": "uuid",
+      "status": "todo",
+      "priority": "high",
+      "dueDate": "2025-01-15",
+      "createdAt": "timestamp"
+    }
+  ]
+}
+```
+
+***
+
+### 5.3 Update Task Status
+
+- **Method:** `PATCH`  
+- **Endpoint:** `/tasks/:taskId/status`  
+- **Authentication:** Required  
+
+#### Path Parameters
+
+- `taskId` (string, required)
+
+#### Request Body
+
+```json
+{
+  "status": "in_progress"
+}
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Task status updated successfully",
+  "data": {
+    "id": "uuid",
+    "projectId": "uuid",
+    "title": "Design homepage",
+    "status": "in_progress",
+    "priority": "high",
+    "dueDate": "2025-01-15",
+    "updatedAt": "timestamp"
+  }
+}
+```
+
+***
+
+### 5.4 Update Task
+
+- **Method:** `PUT`  
+- **Endpoint:** `/tasks/:taskId`  
+- **Authentication:** Required  
+
+#### Path Parameters
+
+- `taskId` (string, required)
+
+#### Request Body
+
+```json
+{
+  "title": "Design homepage v2",
+  "description": "Revise homepage design after feedback",
+  "assigneeId": "uuid",
+  "status": "in_progress",
+  "priority": "medium",
+  "dueDate": "2025-01-20"
+}
+```
+
+#### Success Response (200)
+
+```json
+{
+  "success": true,
+  "message": "Task updated successfully",
+  "data": {
+    "id": "uuid",
+    "projectId": "uuid",
+    "title": "Design homepage v2",
+    "description": "Revise homepage design after feedback",
+    "assigneeId": "uuid",
+    "status": "in_progress",
+    "priority": "medium",
+    "dueDate": "2025-01-20",
+    "updatedAt": "timestamp"
+  }
+}
+```
+
+***
 
 ## 6. Health Check API
-- API 20: Health Check
-- : GET /health
 
-- Authentication: Not Required
+### 6.1 Health Check
 
-### Success Response (200)
+- **Method:** `GET`  
+- **Endpoint:** `/health`  
+- **Authentication:** Not required  
 
-JSON
+#### Example
 
+```http
+GET /api/health
+```
+
+#### Success Response (200)
+
+```json
 {
   "status": "ok",
   "database": "connected"
 }
+```
+
+***
