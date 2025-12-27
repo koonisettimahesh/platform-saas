@@ -11,58 +11,58 @@ The project follows a clear separation of concerns by organizing backend, fronte
 
 ### 1.1 Backend Folder Structure
 
-**Folder Descriptions: backend/src/**
+**Folder: backend/src/**
 
 - **controllers/**  
-  Contains request-handling logic for APIs. Controllers receive requests, apply business logic, and return responses.
+  Handles API request logic. Receives requests, applies business logic, and returns responses.
 
 - **routes/**  
-  Defines API endpoints and maps them to corresponding controllers.
+  Defines API endpoints and maps them to controllers.
 
 - **middleware/**  
-  Contains reusable middleware such as authentication, role-based access control (RBAC), and error handling.
+  Reusable middleware like authentication, role-based access control (RBAC), and error handling.
 
 - **models/**  
-  Defines database models and ORM schemas representing tables such as users, tenants, projects, and tasks.
+  Database models and ORM schemas (users, tenants, projects, tasks).
 
 - **utils/**  
-  Holds utility functions such as token generation, password hashing, and helper methods.
+  Utility functions: token generation, password hashing, helper methods.
 
 - **config/**  
-  Contains configuration files for database connection, environment variables, and application settings.
+  Configuration files for DB connection, environment variables, and app settings.
 
 - **migrations/**  
-  Stores database migration and seed files for automatic schema creation and initial data setup.
+  Database migration and seed files for schema creation and initial data setup.
 
 - **tests/**  
-  Contains unit and integration tests for backend APIs.
+  Unit and integration tests for backend APIs.
 
 ---
 
 ### 1.2 Frontend Folder Structure
 
-**Folder Descriptions: frontend/src/**
+**Folder: frontend/src/**
 
 - **pages/**  
-  Contains main application pages such as Login, Dashboard, Projects, and Users.
+  Main application pages: Login, Dashboard, Projects, Users.
 
 - **components/**  
-  Reusable UI components like forms, tables, buttons, and modals.
+  Reusable UI components: forms, tables, buttons, modals.
 
 - **services/**  
-  Handles API communication with the backend using HTTP clients.
+  API communication with backend using HTTP clients.
 
 - **context/**  
-  Manages global application state such as authentication and user data.
+  Global state management: authentication, user data.
 
 - **routes/**  
-  Defines protected and public routes for the application.
+  Defines protected and public routes.
 
 - **styles/**  
-  Contains global and component-level styling files.
+  Global and component-level styling files.
 
 - **public/**  
-  Stores static assets such as images and icons.
+  Static assets: images, icons.
 
 ---
 
@@ -70,10 +70,10 @@ The project follows a clear separation of concerns by organizing backend, fronte
 
 ### 2.1 Prerequisites
 
-Ensure the following tools are installed on the system:
+Install the following tools:
 
-- Node.js (v18 or above)
-- npm (comes with Node.js)
+- Node.js (v18+)
+- npm (bundled with Node.js)
 - Docker
 - Docker Compose
 - Git
@@ -82,7 +82,7 @@ Ensure the following tools are installed on the system:
 
 ### 2.2 Environment Variables
 
-The application uses environment variables for configuration. These variables are defined in a `.env` file at the project root or directly in `docker-compose.yml`.
+The application uses environment variables for configuration. Define them in a `.env` file at the project root or directly in `docker-compose.yml`.
 
 **Required Variables:**
 
@@ -95,48 +95,64 @@ The application uses environment variables for configuration. These variables ar
 - `JWT_EXPIRY`
 - `NODE_ENV`
 
-All environment variables use development or test values and are committed for evaluation purposes.
+> For evaluation, development or test values can be used.
 
 ---
 
 ### 2.3 Installation Steps
 
 1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd multi-tenant-saas
-   
+
+```bash
+git clone <repository-url>
+cd multi-tenant-saas
+````
+
 2. Install backend dependencies:
 
-   cd backend
-   npm install
+```bash
+cd backend
+npm install
+```
 
 3. Install frontend dependencies:
 
-   cd ../frontend
-   npm install
+```bash
+cd ../frontend
+npm install
+```
+
+---
 
 ### 2.4 Running the Application Locally
 
-The application is fully containerized and can be started using Docker Compose.
+The application is containerized and can be started using Docker Compose:
 
-    docker-compose up -d
+```bash
+docker-compose up -d
+```
 
+This starts:
 
-This command starts:
+* PostgreSQL database on port 5432
+* Backend API server on port 5000
+* Frontend React app on port 3000
 
- - PostgreSQL database on port 5432
-
- - Backend API server on port 5000
-
- - Frontend React application on port 3000
+---
 
 ### 2.5 Running Tests
 
-Backend Tests
-   cd backend
-   npm test
+**Backend Tests:**
 
-Frontend Tests
-  cd frontend
-  npm test
+```bash
+cd backend
+npm test
+```
+
+**Frontend Tests:**
+
+```bash
+cd frontend
+npm test
+```
+
